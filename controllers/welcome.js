@@ -1,5 +1,7 @@
 'use strict'
 
+const { json } = require("body-parser");
+
 var controller = {
 
     welcome: function(req, res){
@@ -36,7 +38,11 @@ var controller = {
     crear_alumno: function(req, res){
         let user_info = req.body;
         console.log(user_info);
-        res.send('creamos un alumno ' + user_info.nombre + ' Edad ' + user_info.edad);
+        return res.status(200),json({
+            status: 200,
+            nombre_de_alumno: user_info.nombre + " " + user_info.apellido,
+            edad: user_info.edad
+        });
     },
 
     actualizar_alumno: function(req, res){
