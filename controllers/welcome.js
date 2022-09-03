@@ -13,16 +13,28 @@ var controller = {
     alumno: function(req, res){
 
         let cal1 = 5;
-        let cal2 = 8;
-        let cal3 = 10;
+        let cal2 = 6;
+        let cal3 = 4;
 
-        let prom = (cal1 + cal2 + cal3) / 3;
+        let final = (cal1 + cal2 + cal3) / 3;
 
-        res.send('La calificación promedio es: ' + prom);
+        if (final < 6) {
+            return res.status(400).json({
+                status: 200,
+                cal_final: final
+            });
+        } else {
+            return res.status(200).json({
+                status: 200,
+                cal_final: final
+            });
+        }
+
 
     },
 
     crear_alumno: function(req, res){
+        console.log(req);
         res.send('creamos un alumno');
     },
 
