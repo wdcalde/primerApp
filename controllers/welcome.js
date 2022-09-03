@@ -38,7 +38,7 @@ var controller = {
     crear_alumno: function(req, res){
         let user_info = req.body;
         console.log(user_info);
-        return res.status(200),json({
+        return res.status(200).json({
             status: 200,
             nombre_de_alumno: user_info.nombre + " " + user_info.apellido,
             edad: user_info.edad
