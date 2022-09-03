@@ -11,7 +11,14 @@ app.get('/alumnos', (req, res) => {
 });
 
 app.get('/alumno', (req, res) => {
-    res.send('Información de un alumno');
+
+    let cal1 = 5;
+    let cal2 = 8;
+    let cal3 = 10;
+
+    let prom = (cal1+cal2+cal3)/3;
+
+    res.send('La calificación promedio es: ' + prom);
 });
 
 app.post('/alumno', (req, res) => {
