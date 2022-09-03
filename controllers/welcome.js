@@ -34,8 +34,9 @@ var controller = {
     },
 
     crear_alumno: function(req, res){
-        console.log(req);
-        res.send('creamos un alumno');
+        let user_info = req.body;
+        console.log(user_info);
+        res.send('creamos un alumno ' + user_info.nombre + ' Edad ' + user_info.edad);
     },
 
     actualizar_alumno: function(req, res){
