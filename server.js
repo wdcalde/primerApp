@@ -4,7 +4,7 @@ const app = require('./app');
 const port = 3700;
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/curso', 
+mongoose.connect('mongodb://127.0.0.1:27017/curso', 
     { useNewUrlParser:true, useUnifiedTopology: true })
     .then(() => {
         console.log('conexión a la base de datos establecida con éxito');
