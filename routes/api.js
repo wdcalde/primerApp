@@ -1,6 +1,7 @@
 'use strict'
 const express = require('express');
 const api = express.Router();
+const { body } = require('express-validator');
 
 var WelcomeController = require('../controllers/welcome');
 var AlumnosController = require('../controllers/alumnos');
