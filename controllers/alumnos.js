@@ -1,6 +1,6 @@
 'use strict'
-
-var Alumnos = require('../models/alumnos')
+const { validationResult } = require('express-validator');
+var Alumnos = require('../models/alumnos');
 
 var controller = {
     alumnos: function (req, res) {
@@ -30,10 +30,41 @@ var controller = {
 
     },
     crear_alumno: function (req, res) {
-        let user_info = req.body;
+        const errors = validationResult(req);
+        if(!errors.isEmpty()){
+            return res.status(400).json({
+                errors: errors.array()
+            });
+        }
         
+        let user_info = req.body;
 
-    },
+        Alumnos.findOne({ n_cuenta: user_info.n_cuenta }).exec((err, alumno) => {
+            if (err) return res.status(500).json({
+                status: 500, mensaje: err
+            });
+            if (alumno) return res.status(200).json({
+                status: 500, mensaje: "el alumno ya existe"
+            });
+            let alumnos_model = new Alumnos();
+
+            alumnos_model.n_cuenta = user_info.n_cuenta;
+            alumnos_model.nombre = user_info.nombre;
+            alumnos_model.edad = user_info.edad;
+            alumnos_model.genero = user_info.genero;
+
+            alumnos_model.save((err, alumnoStored) => {
+                if (err) return res.status(500).json({
+                    status: 500, mensaje: err
+                });
+                if (!alumnoStored) return res.status(200).json({
+                    status: 500, mensaje: "no grabó el alumno"
+                });
+                return res.status(200).json({ status: 200, message: "usuario almacenado" });
+            });
+        });
+
+    }
 };
 
 module.exports = controller;
