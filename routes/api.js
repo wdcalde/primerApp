@@ -7,5 +7,7 @@ var AlumnosController = require('../controllers/alumnos');
 
 api.get('/', WelcomeController.welcome);
 api.get('/alumnos', AlumnosController.alumnos);
+api.get('/alumno/:n_cuenta', AlumnosController.alumno);
+api.post('/alumno', AlumnosController.crear_alumno);
 
 module.exports = api;
