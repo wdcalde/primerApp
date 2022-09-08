@@ -7,13 +7,15 @@ var WelcomeController = require('../controllers/welcome');
 var AlumnosController = require('../controllers/alumnos');
 let AuthController = require('../controllers/auth');
 
+let userProtectUrl = require('../middlewares/authUser').userProtectUrl;
+
 api.get('/', WelcomeController.welcome);
 
 api.get('/alumnos', AlumnosController.alumnos);
 
 api.get('/alumno/:n_cuenta', AlumnosController.alumno);
 
-api.post('/alumno', [
+api.post('/alumno', userProtectUrl, [
     body('genero').not().isEmpty(),
     body('n_cuenta').not().isEmpty(),
     body('nombre').not().isEmpty(),

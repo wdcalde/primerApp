@@ -1,5 +1,6 @@
 'use strict'
 
+const jwt = require('jsonwebtoken');
 const { json } = require("body-parser");
 const { validationResult } = require('express-validator');
 var Usuarios = require('../models/usuarios');
@@ -25,7 +26,18 @@ var controller = {
                 status: 200, mensaje: "los datos no son válidos"
             });
 
-            return res.status(200).json({ status: 200, data: usuario });
+            const payload = {
+                user_id: usuario.id
+            };
+
+            const access_token = jwt.sign(payload, 'PeAFOr40XilBsMPa5IJVt7EMZC3pZI64174mLbT9ugmUnT0duq', {expiresIn: '1d'});
+
+            return res.status(200).json({ 
+                status: 200, 
+                data: usuario, 
+                message: "usuario logeado", 
+                token: access_token 
+            });
 
         });
 
