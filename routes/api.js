@@ -5,6 +5,7 @@ const { body } = require('express-validator');
 
 var WelcomeController = require('../controllers/welcome');
 var AlumnosController = require('../controllers/alumnos');
+let AuthController = require('../controllers/auth');
 
 api.get('/', WelcomeController.welcome);
 
@@ -27,5 +28,7 @@ api.put('/alumno/:n_cuenta', [
 
 api.delete('/alumno/:n_cuenta', AlumnosController.delete_alumno);
 
+api.post('/login', AuthController.login);
+api.post('/logout', AuthController.logout);
 
 module.exports = api;    
