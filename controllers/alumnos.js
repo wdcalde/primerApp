@@ -1,4 +1,5 @@
 'use strict'
+const { json } = require('body-parser');
 const { validationResult } = require('express-validator');
 var Alumnos = require('../models/alumnos');
 
@@ -30,6 +31,7 @@ var controller = {
 
     },
     crear_alumno: function (req, res) {
+
         const errors = validationResult(req);
         if(!errors.isEmpty()){
             return res.status(400).json({
@@ -64,6 +66,49 @@ var controller = {
             });
         });
 
+    },
+    update_alumno: function(req, res) {
+
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({
+                errors: errors.array()
+            });
+        };
+
+        let n_cuenta = req.params.n_cuenta;
+        let user_info = req.body;
+
+        let alumno_info_update = {
+            nombre: user_info.nombre,
+            edad: user_info.edad,
+            genero: user_info.genero
+        };
+
+        Alumnos.findOneAndUpdate({ n_cuenta: n_cuenta }, alumno_info_update, { new: true }, (err, alumnoUpdate) => {
+            if (err) return res.status(500).json({ mensaje: "error al acutalizar" });
+            if (!alumnoUpdate) return res.status(400).json({ mensaje: "No existe el alumno" });
+
+            return res.status(200).json({
+                nombre: alumnoUpdate.nombre,
+                edad: alumnoUpdate.edad,
+                genero: alumnoUpdate.genero
+            });
+
+        });
+    },
+
+    delete_alumno: function(req, res) {
+        let n_cuenta = req.params.n_cuenta;
+
+        Alumnos.findOneAndRemove({n_cuenta: n_cuenta}, (err, alumnoDelete) => {
+            if (err) return res.status(500).json({ mensaje: "error al acutalizar" });
+            if (!alumnoDelete) return res.status(400).json({ mensaje: "No existe el alumno" });
+
+            return res.status(200).json({
+                mensaje: "Usuario eliminado"
+            });
+        })
     }
 };
 
