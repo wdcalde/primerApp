@@ -18,7 +18,6 @@ const middlewares = {
                     Sessions.findOne({ user_id: req.decoded.user_id, jwt: token}).exec((err, session)=>{
                         if(err) return res.status(500).send({mensaje: "Error al devolver los datos"});
                         if(!session) return res.status(404).send({mensaje: "Los datos de autenticación no son válidos"});
-                        return
                         next();
                     });
                 }

@@ -57,7 +57,11 @@ var controller = {
 
     },
     logout: function(req, res){
-        res.send('fuera');
+        Sessions.findOneAndRemove({user_id: req.decoded.user_id}, (err, sessionDeleted)=>{
+            if(err) return res.status(500).send({message: err});
+            if (!sessionDeleted) return res.status(404).send({message: "Datos erroneos"});
+            return res.status(200).send({message: "Usuario salió correctamente"});
+        });
     }
 }
 

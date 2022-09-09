@@ -31,6 +31,6 @@ api.put('/alumno/:n_cuenta', [
 api.delete('/alumno/:n_cuenta', AlumnosController.delete_alumno);
 
 api.post('/login', AuthController.login);
-api.post('/logout', AuthController.logout);
+api.post('/logout', userProtectUrl, AuthController.logout);
 
 module.exports = api;    
