@@ -3,7 +3,9 @@
 const jwt = require('jsonwebtoken');
 const { json } = require("body-parser");
 const { validationResult } = require('express-validator');
+
 var Usuarios = require('../models/usuarios');
+var Sessions = require('../models/sessions');
 
 var controller = {
 
@@ -32,13 +34,25 @@ var controller = {
 
             const access_token = jwt.sign(payload, 'PeAFOr40XilBsMPa5IJVt7EMZC3pZI64174mLbT9ugmUnT0duq', {expiresIn: '1d'});
 
-            return res.status(200).json({ 
-                status: 200, 
-                data: usuario, 
-                message: "usuario logeado", 
-                token: access_token 
-            });
+            let update ={
+                user_id: usuario.id,
+                jwt: access_token
+            };
 
+            Sessions.findOneAndUpdate({user_id: usuario.id}, update, {upsert:true, new: true}, (err, sessionsUpdate)=>{
+                if (err) return res.status(500).json({
+                    status: 500, mensaje: err
+                });
+                if (!sessionsUpdate) return res.status(404).json({
+                    status: 404, mensaje: "Datos erroneos"
+                });
+                return res.status(200).json({
+                    status: 200,
+                    data: usuario,
+                    message: "autenticación correcta",
+                    token: access_token
+                });
+            });
         });
 
     },
